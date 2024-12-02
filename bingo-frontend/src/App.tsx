@@ -1,25 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Lobby from "./pages/Lobby";
+import Game from "./pages/Game";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        {/* Ruta pública para el Login */}
+        <Route path="/" element={<Login />} />
+
+        {/* Ruta protegida para Home */}
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Ruta protegida para Lobby */}
+        <Route
+          path="/lobby/:lobbyId"
+          element={
+            <ProtectedRoute>
+              <Lobby />
+            </ProtectedRoute>
+          }
+        />
+        {/* Ruta protegida para Lobby */}
+        <Route
+          path="/game/:lobbyId"
+          element={
+            <ProtectedRoute>
+              <Game />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
 
