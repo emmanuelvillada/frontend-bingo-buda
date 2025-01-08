@@ -4,45 +4,48 @@ import Home from "./pages/Home";
 import Lobby from "./pages/Lobby";
 import Game from "./pages/Game";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthProvider } from "./services/AuthContext";
 
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Ruta pública para el Login */}
-        <Route path="/" element={<Login />} />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Ruta pública para el Login */}
+          <Route path="/" element={<Login />} />
 
-        {/* Ruta protegida para Home */}
-        <Route
-          path="/home"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
+          {/* Ruta protegida para Home */}
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* Ruta protegida para Lobby */}
-        <Route
-          path="/lobby/:lobbyId"
-          element={
-            <ProtectedRoute>
-              <Lobby />
-            </ProtectedRoute>
-          }
-        />
-        {/* Ruta protegida para Lobby */}
-        <Route
-          path="/game/:lobbyId"
-          element={
-            <ProtectedRoute>
-              <Game />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </Router>
+          {/* Ruta protegida para Lobby */}
+          <Route
+            path="/lobby/:lobbyId"
+            element={
+              <ProtectedRoute>
+                <Lobby />
+              </ProtectedRoute>
+            }
+          />
+          {/* Ruta protegida para Lobby */}
+          <Route
+            path="/game/:lobbyId"
+            element={
+              <ProtectedRoute>
+                <Game />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

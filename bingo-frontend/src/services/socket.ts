@@ -8,7 +8,7 @@ const socket = io('http://localhost:3000', {
 });
 
 socket.on('connect', () => {
-    console.log('Conectado al servidor de WebSocket');
+    console.log('Conexión exitosa');
 });
 
 socket.on('connect_error', (error) => {

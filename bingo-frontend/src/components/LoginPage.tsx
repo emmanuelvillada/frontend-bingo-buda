@@ -1,24 +1,46 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../services/AuthContext";
 
 
 const LoginPage = () => {
     const navigate = useNavigate();
+    const { user, setUser } = useAuth();
+
+
+    if (user) {
+        navigate("/home");
+    }
 
     useEffect(() => {
+        const fetchUser = async (token: string) => {
+            try {
+                const response = await fetch("http://localhost:3000/api/user", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                const userData = await response.json();
+                setUser(userData);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
         const queryParams = new URLSearchParams(window.location.search);
         const token = queryParams.get("token");
 
         if (token) {
             localStorage.setItem("authToken", token);
+            fetchUser(token); // Llama a la función después de guardar el token
             navigate("/home");
         } else {
             const storedToken = localStorage.getItem("authToken");
             if (storedToken) {
+                fetchUser(storedToken); // Si ya existe un token, obtiene los datos del usuario
                 navigate("/home");
             }
         }
-    }, [navigate]);
+    }, [navigate, setUser]);
 
     const handleLogin = () => {
         window.location.href = "http://localhost:3000/auth/google";

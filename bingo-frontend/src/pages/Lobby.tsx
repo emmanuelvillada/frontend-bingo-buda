@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import socket from "../services/socket"; // Configuración del WebSocket
 import api from "../services/axiosConfig"; // Instancia de Axios configurada
+import { useAuth } from "../services/AuthContext";
 
 interface Player {
     id: number;
@@ -9,18 +10,20 @@ interface Player {
 }
 
 const LobbyPage = () => {
+    const { user } = useAuth();
     const { lobbyId } = useParams(); // Obtener el ID del lobby desde la URL
     const navigate = useNavigate();
     const [countdown, setCountdown] = useState(60); // Temporizador inicial
     const [players, setPlayers] = useState<Player[]>([]); // Lista de jugadores
     const [loading, setLoading] = useState(true);
 
+
     useEffect(() => {
         // Unirse al lobby al montar el componente
         const joinLobby = async () => {
             try {
                 // Emitir evento para unirse al lobby
-                socket.emit("join-lobby", { lobbyId, player: { id: socket.id, name: "PlayerName" } });
+                socket.emit("join-lobby", { lobbyId, player: { id: socket.id, name: user?.name || "Anonymous" } });
 
                 // Obtener datos iniciales del lobby desde el servidor
                 const response = await api.get(`/bingo/lobby/${lobbyId}`);

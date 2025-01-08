@@ -27,7 +27,7 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 
     // Mientras se verifica la autenticación, muestra un loader o nada
     if (isAuthenticated === null) {
-        return <div>Verificando autenticación...</div>;
+        return <div className="flex items-center justify-center h-screen">Verificando autenticación...</div>;
     }
 
     // Si no está autenticado, redirige al login
