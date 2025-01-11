@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/axiosConfig"; // Importa tu instancia configurada de Axios
 
+
 const Home = () => {
     const navigate = useNavigate();
 

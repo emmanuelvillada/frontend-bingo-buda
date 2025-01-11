@@ -1,29 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import api from "../services/axiosConfig";
-
+import { useAuth } from "../services/AuthContext";
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+    const { setUser } = useAuth();
 
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                // Llama al backend para verificar si el usuario está autenticado
                 const response = await api.get("/auth/verify", {
-                    withCredentials: true, // Incluye cookies en la solicitud
+                    withCredentials: true,
                 });
 
-                if (response.status === 200) {
+                if (response.status === 200 && response.data) {
                     setIsAuthenticated(true);
+                    // Explicitly type the user data and check required fields
+                    const userData = {
+                        name: response.data.name,
+                        email: response.data.email
+                    };
+                    setUser(userData);
+                } else {
+                    setIsAuthenticated(false);
+                    setUser(null);
                 }
             } catch (error) {
                 console.error("Usuario no autenticado:", error);
                 setIsAuthenticated(false);
+                setUser(null);
             }
         };
 
         checkAuth();
-    }, []);
+    }, [setUser]);
 
     // Mientras se verifica la autenticación, muestra un loader o nada
     if (isAuthenticated === null) {
