@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import api from "../services/axiosConfig";
 import { useAuth } from "../services/AuthContext";
+import type { User } from "../types/User";
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
     const { setUser } = useAuth();
@@ -16,7 +17,8 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
                 if (response.status === 200 && response.data) {
                     setIsAuthenticated(true);
                     // Explicitly type the user data and check required fields
-                    const userData = {
+                    const userData: User = {
+                        id: response.data.id,
                         name: response.data.name,
                         email: response.data.email
                     };

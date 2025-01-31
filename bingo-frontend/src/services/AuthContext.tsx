@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { User } from "../types/user"; // Importa la interfaz User
-
+import type { User } from "../types/User";
 interface AuthContextType {
     user: User | null;
     setUser: React.Dispatch<React.SetStateAction<User | null>>; // Permite actualizar el usuario
