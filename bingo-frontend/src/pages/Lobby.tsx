@@ -38,7 +38,7 @@ const LobbyPage = () => {
 
         joinLobby();
         socket.on('connect', () => {
-            console.log('Socket connected successfully');
+            console.log('Socket connected');
         });
 
         socket.on('connect_error', (error) => {
@@ -70,7 +70,7 @@ const LobbyPage = () => {
             socket.off("game-start");
             socket.off("time-left");
         };
-    }, [lobbyId, navigate]);
+    }, [lobbyId, navigate, user?.name]);
 
     // Manejar inicio manual del juego
     const handleStartGame = async () => {

@@ -1,14 +1,9 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-
-
-interface User {
-    name: string;
-    email: string;
-}
+import React, { createContext, useContext, useState, ReactNode } from "react";
+import { User } from "../types/user"; // Importa la interfaz User
 
 interface AuthContextType {
     user: User | null;
-    setUser: (user: User | null) => void;
+    setUser: React.Dispatch<React.SetStateAction<User | null>>; // Permite actualizar el usuario
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -18,11 +13,10 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-    const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+    const [user, setUser] = useState<User | null>(null); // Usa la interfaz correcta
 
     return (
-        <AuthContext.Provider value={{ user, setUser }
-        }>
+        <AuthContext.Provider value={{ user, setUser }}>
             {children}
         </AuthContext.Provider>
     );
@@ -30,6 +24,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
-    if (!context) throw new Error('useAuth must be used within AuthProvider');
+    if (!context) throw new Error("useAuth must be used within AuthProvider");
     return context;
 };
